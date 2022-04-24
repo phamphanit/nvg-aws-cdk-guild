@@ -8,4 +8,4 @@ export interface BaseEventPayload<T> {
     id: string;
     source: string;
     data: T;
-  }
+}

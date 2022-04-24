@@ -1,14 +1,14 @@
 
-import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
-import { publishEvent } from '../clients/sns';
-import { BaseEventPayload, ContactRequest } from '../types';
+import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { ContactRequest } from '../types';
 
-type contactRequestEventPayload = BaseEventPayload<ContactRequest>
-export const handleContactRequest = async (event: APIGatewayEvent) : Promise<APIGatewayProxyResult> => {
+export const handleContactRequest = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
 
-    const result : APIGatewayProxyResult = {
+    const contactRequest = event.body as unknown as ContactRequest;
+
+    const result: APIGatewayProxyResult = {
         statusCode: 200,
-        body: "Success"
+        body: "Your request has been sent"
     }
     return result;
 } 

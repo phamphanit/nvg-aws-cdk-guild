@@ -1,8 +1,6 @@
 import { Stack } from "aws-cdk-lib";
-import { ApiDefinition, IRestApi, RestApi, SpecRestApi } from "aws-cdk-lib/aws-apigateway";
+import { IRestApi, LambdaIntegration, RestApi } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
-import { readFileSync } from "fs";
-import * as YAML from 'yaml'; 
 
 export function createApi(
     scope: Stack,
@@ -11,12 +9,10 @@ export function createApi(
     }
 ): IRestApi {
 
-    const file = readFileSync('../openapi.yml', 'utf8')
-    .replace(
-        /\${CONTACT_REQUEST_LAMBDA_ARN}/g,
-        lambdas.contactRequestLambda.functionArn
-    )
-    return new SpecRestApi(scope, 'vincent-guild-api', {
-        apiDefinition: ApiDefinition.fromInline(YAML.parse(file)),
-    })
+    const api = new RestApi(scope, 'vincent-guild-api');
+
+    const contactRequestResouce = api.root.addResource('contact-request');
+    contactRequestResouce.addMethod('POST', new LambdaIntegration(lambdas.contactRequestLambda));
+
+    return api;
 }
