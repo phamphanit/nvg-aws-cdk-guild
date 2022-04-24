@@ -4,6 +4,9 @@ This is a blank project for CDK development with TypeScript.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
+## Prerequisite
+Install node
+Install aws-cdk lib https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html
 ## Useful commands
 
 * `npm run build`   compile typescript to js

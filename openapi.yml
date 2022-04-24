@@ -1,0 +1,50 @@
+openapi: 3.0.1
+info:
+  title: REST API
+  contact:
+    name: NvgGuild
+  version: 1.0.0
+x-amazon-apigateway-request-validators:
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+tags:
+  - name: nvg-guild
+paths:
+  /contact-request:
+    post:
+      x-amazon-apigateway-request-validator: params-only
+      tags:
+        - sendgrid
+      summary: contact-request handler
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri: "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CONTACT_REQUEST_LAMBDA_ARN}/invocations"
+        responses:
+          default:
+            statusCode: 200
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+      responses:
+        '200':
+          description: Successful response
+components:
+  securitySchemes:
+    HgAccountsUserPool:
+      type: 'apiKey'
+      name: 'Authorization'
+      in: 'header'
+      x-amazon-apigateway-authtype: 'cognito_user_pools'
+      x-amazon-apigateway-authorizer:
+        type: 'cognito_user_pools'
+        providerARNs:
+          - '${COGNITO_USER_POOL_ARN}'
+  schemas:
+    HelloWorldResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
