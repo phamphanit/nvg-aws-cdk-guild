@@ -4,11 +4,12 @@ import { ContactRequest } from '../types';
 
 export const handleContactRequest = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
 
-    const contactRequest = event.body as unknown as ContactRequest;
+
+    const contactRequest = typeof event.body == 'object' ? event.body : JSON.parse(event.body) as ContactRequest;
 
     const result: APIGatewayProxyResult = {
         statusCode: 200,
-        body: "Your request has been sent"
+        body: `Sent request from ${contactRequest?.email}`
     }
     return result;
 } 
