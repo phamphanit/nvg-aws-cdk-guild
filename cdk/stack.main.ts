@@ -2,8 +2,9 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { createApi } from './apigateway';
 import { createSNSTopic, subscribeSQSToSNSTopic } from './events';
-import { createContactRequestLambda } from './lambdas';
-import { createContactRequestQueue } from './sqs';
+import { createContactRequestLambda, createSendEmailLambda, subscribeLambdaToSQS } from './lambdas';
+import { createContactBucket } from './s3';
+import { createContactRequestQueue, createMaintenanceQueue } from './sqs';
 
 export class MainStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -19,7 +20,13 @@ export class MainStack extends Stack {
       contactRequestLambda
     });
 
-    const contacQueue = createContactRequestQueue(this);
-    subscribeSQSToSNSTopic(contactRequestTopic, contacQueue);
+    const contactQueue = createContactRequestQueue(this);
+    subscribeSQSToSNSTopic(contactRequestTopic, contactQueue);
+
+    const contactBucket = createContactBucket(this);
+
+    const maintenanceQueue = createMaintenanceQueue(this);
+    const contactLambda = createSendEmailLambda(this, contactBucket, maintenanceQueue);
+    subscribeLambdaToSQS(contactQueue, contactLambda);
   }
 }
