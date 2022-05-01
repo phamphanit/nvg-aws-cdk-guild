@@ -6,7 +6,7 @@ export const createContactBucket = (
   scope: Construct,
 ): Bucket =>
   new Bucket(scope, 'ConfigBucket', {
-    bucketName: `vincent-contact-request`,
+    bucketName: `${process.env.UNIQUE_SUFFIX}-contact-request`,
     publicReadAccess: false,
     autoDeleteObjects: false,
     versioned: true,

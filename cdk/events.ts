@@ -9,7 +9,7 @@ export function createSNSTopic(
 ): Topic {
   const topic = new Topic(scope, 'Topic', {
     displayName: 'Contact Request topic',
-    topicName: 'vincent-contactRequest',
+    topicName: `${process.env.UNIQUE_SUFFIX}-contactRequest`,
   });
 
   new CfnOutput(scope, 'SNSContactTopicArn', {
