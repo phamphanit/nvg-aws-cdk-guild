@@ -8,7 +8,7 @@ import { BaseEventPayload, ContactRequest } from "../app/src/types";
 export const createContactRequestQueue = (scope: Construct) => {
   const queue = new Queue(scope, `ContactRequestQueue`, {
     retentionPeriod: Duration.days(14),
-    queueName: 'vincent-contact-request-queue',
+    queueName: `${process.env.UNIQUE_SUFFIX}-contact-request-queue`,
     deliveryDelay: Duration.minutes(0),
 
   });
@@ -22,7 +22,7 @@ export const createContactRequestQueue = (scope: Construct) => {
 export const createMaintenanceQueue = (scope: Construct) => {
   const queue = new Queue(scope, `MaintenanceQueue`, {
     retentionPeriod: Duration.days(14),
-    queueName: 'vincent-maintenance-queue',
+    queueName: `${process.env.UNIQUE_SUFFIX}-maintenance-queue`,
     deliveryDelay: Duration.minutes(0),
   });
 
