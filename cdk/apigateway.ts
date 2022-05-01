@@ -9,7 +9,7 @@ export function createApi(
     }
 ): IRestApi {
 
-    const api = new RestApi(scope, 'vincent-guild-api');
+    const api = new RestApi(scope, `${process.env.UNIQUE_SUFFIX}-guild-api`);
 
     const contactRequestResouce = api.root.addResource('contact-request');
     contactRequestResouce.addMethod('POST', new LambdaIntegration(lambdas.contactRequestLambda));

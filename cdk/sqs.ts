@@ -6,7 +6,7 @@ import { Construct } from "constructs/lib/construct";
 export const createContactRequestQueue = (scope: Construct) => {
   const queue = new Queue(scope, `MaintenanceQueue`, {
     retentionPeriod: Duration.days(14),
-    queueName: 'vincent-contact-request-queue',
+    queueName: `${process.env.UNIQUE_SUFFIX}-contact-request-queue`,
     deliveryDelay: Duration.minutes(0),
   });
 
